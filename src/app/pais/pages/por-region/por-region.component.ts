@@ -11,32 +11,42 @@ import { Country } from '../../interfaces/pais.interface';
 })
 export class PorRegionComponent implements OnInit {
 
-  paises    : Country[] = [];
-  hayError  : boolean = false;
-  termino   : string = '';
+  regiones    : string[] = ['africa', 'americas', 'asia', 'europe', 'oceania'];
+  regionActiva: string = '';
+  paises      : Country[] = [];
+  hayError    : boolean = false;
+  termino     : string = '';
 
   constructor(private paisService: PaisService) { }
 
   ngOnInit(): void {
   }
 
-  buscar(termino: string) {
+  activaRegion(region: string){
+    if(region === this.regionActiva) {return;}
+    this.regionActiva = region;
+    this.paises = [];
+    this.buscar(region);
+  }
+
+  getClassCss(region: string): string {
+    return (region === this.regionActiva)
+        ? 'btn btn-primary'
+        : 'btn btn-outline-primary';
+  }
+
+  buscar(region: string) {
     this.hayError = false;
-    this.termino = termino;
-    this.paisService.buscarPorRegion(termino)
+    this.termino = region;
+    this.paisService.buscarPorRegion(region)
     .subscribe((resp: Country[]) => {
       this.paises = resp;
     }, (err) => {
       this.paises = [];
-      if(termino !== ''){
+      if(region !== ''){
         this.hayError = true;
       }
     });
-  }
-
-  sugerencias(termino: any) {
-    this.hayError = false;
-    console.log(termino);
   }
 
 }

@@ -13,8 +13,8 @@ import { PaisService } from '../../services/pais.service';
 export class PaisInputComponent implements OnInit {
 
   @Input() placeholder : string = '';
-  @Output() onEnter     : EventEmitter<string> = new EventEmitter();
-  @Input()  onDebounce  : EventEmitter<string> = new EventEmitter();
+  @Output() onEnter    : EventEmitter<string> = new EventEmitter();
+  @Output()  onDebounce: EventEmitter<string> = new EventEmitter();
 
   termino   : string = '';
   debouncer : Subject<string> = new Subject();
@@ -26,7 +26,6 @@ export class PaisInputComponent implements OnInit {
     .pipe(debounceTime(300))
     .subscribe( valor => {
       this.onDebounce.emit( valor );
-      console.log(valor);
     });
   }
 
